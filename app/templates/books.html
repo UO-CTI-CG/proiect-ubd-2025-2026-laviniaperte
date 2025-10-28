@@ -1,22 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="ro">
 
 <head>
+    <meta charset="UTF-8">
     <title>Biblioteca Digitală</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
     <h1>Lista cărților</h1>
-    <a href="/add-book">Adaugă carte nouă</a>
-    <ul>
+
+    <div style="text-align:center; margin-bottom: 25px;">
+        <a href="{{ url_for('add_book') }}" class="button"> Adaugă o carte nouă</a>
+    </div>
+
+    <table>
+        <tr>
+            <th>Titlu</th>
+            <th>Autor</th>
+            <th>An</th>
+            <th>Acțiuni</th>
+        </tr>
         {% for book in books %}
-        <li>
-            {{ book.title }} - {{ book.author }} ({{ book.year }})
-            <a href="/edit-book/{{ book.id }}">Edit</a>
-            <a href="/delete-book/{{ book.id }}">Șterge</a>
-        </li>
+        <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.year }}</td>
+            <td>
+                <a href="/edit-book/{{ book.id }}" class="button"> Editare</a>
+                <a href="/delete-book/{{ book.id }}" class="button" style="background-color:#d670ff;"> Șterge</a>
+            </td>
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
 </body>
 
 </html>
