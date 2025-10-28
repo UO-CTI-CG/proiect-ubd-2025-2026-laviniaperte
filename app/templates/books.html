@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Biblioteca Digitală</title>
+</head>
+
+<body>
+    <h1>Lista cărților</h1>
+    <a href="/add-book">Adaugă carte nouă</a>
+    <ul>
+        {% for book in books %}
+        <li>
+            {{ book.title }} - {{ book.author }} ({{ book.year }})
+            <a href="/edit-book/{{ book.id }}">Edit</a>
+            <a href="/delete-book/{{ book.id }}">Șterge</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

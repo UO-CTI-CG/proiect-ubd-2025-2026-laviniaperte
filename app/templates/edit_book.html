@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Editare Carte</title>
+</head>
+
+<body>
+    <h1>Editare carte</h1>
+    <form method="POST">
+        Titlu: <input type="text" name="title" value="{{ book.title }}"><br>
+        Autor: <input type="text" name="author" value="{{ book.author }}"><br>
+        An: <input type="text" name="year" value="{{ book.year }}"><br>
+        <input type="submit" value="Salvează">
+    </form>
+    <a href="/books">Înapoi la listă</a>
+</body>
+
+</html>
