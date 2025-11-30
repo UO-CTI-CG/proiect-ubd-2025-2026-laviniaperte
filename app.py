@@ -23,6 +23,7 @@ def home():
 def list_books():
     cursor.execute("SELECT * FROM books")
     books = cursor.fetchall()
+    print(books)  # <--- asta afișează în terminal ce primește React
     return jsonify(books)
 
 # ADAUGARE CARTE

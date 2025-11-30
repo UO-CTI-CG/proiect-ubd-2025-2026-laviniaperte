@@ -7,15 +7,26 @@ export default function BooksList() {
   const [books, setBooks] = useState([]);
   const navigate = useNavigate();
 
+  // Preia cărțile de la backend
   useEffect(() => {
-    axios.get("http://localhost:5000/books").then((res) => {
-      setBooks(res.data);
-    });
+    axios.get("http://localhost:5000/books")
+      .then((res) => {
+        console.log("Cărți primite:", res.data); // verificare în consolă
+        setBooks(res.data);
+      })
+      .catch((err) => {
+        console.error("Eroare la preluarea cărților:", err);
+      });
   }, []);
 
+  // Șterge o carte
   const deleteBook = async (id) => {
-    await axios.delete(`http://localhost:5000/books/${id}`);
-    setBooks(books.filter((book) => book.id !== id));
+    try {
+      await axios.delete(`http://localhost:5000/books/${id}`);
+      setBooks(books.filter((book) => book.id !== id));
+    } catch (err) {
+      console.error("Eroare la ștergerea cărții:", err);
+    }
   };
 
   return (
@@ -31,6 +42,7 @@ export default function BooksList() {
       <table>
         <thead>
           <tr>
+            <th>ID</th> {/* coloana cu numărul rândului */}
             <th>Titlu</th>
             <th>Autor</th>
             <th>An</th>
@@ -38,8 +50,9 @@ export default function BooksList() {
           </tr>
         </thead>
         <tbody>
-          {books.map((book) => (
+          {books.map((book, index) => (
             <tr key={book.id}>
+              <td>{index + 1}</td> {/* afișează 1, 2, 3… */}
               <td>{book.title}</td>
               <td>{book.author}</td>
               <td>{book.year}</td>
