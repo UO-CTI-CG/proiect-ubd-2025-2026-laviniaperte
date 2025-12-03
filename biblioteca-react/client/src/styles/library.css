@@ -1,11 +1,13 @@
-/* FUNDAL */
+/* FUNDAL PAGINĂ */
 body {
     margin: 0;
     padding: 0;
-    background-color: #a48eca;
+    background-color: #fdf6f0;
+    /* crem deschis */
     font-family: Arial, sans-serif;
     min-height: 100vh;
-    color: white;
+    color: #5c3a21;
+    /* text maro închis */
 }
 
 /* CONTAINER PAGINI */
@@ -13,11 +15,12 @@ div {
     width: 90%;
     max-width: 700px;
     margin: 30px auto;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 248, 240, 0.85);
+    /* crem foarte deschis */
     padding: 25px;
     border-radius: 15px;
     backdrop-filter: blur(10px);
-    color: white;
+    color: #5c3a21;
 }
 
 /* TITLURI */
@@ -25,6 +28,8 @@ h1 {
     text-align: center;
     margin-bottom: 25px;
     font-size: 28px;
+    color: #8b5e3c;
+    /* crem-maro */
 }
 
 /* FORMULAR */
@@ -46,30 +51,47 @@ input {
     border: none;
     outline: none;
     background: rgba(255, 255, 255, 0.9);
+    color: #5c3a21;
 }
 
-/* BUTTON */
+/* BUTOANE GENERALE */
 .button {
-    background-color: #b45bff;
+    background-color: #f5e3d0;
+    /* crem mediu */
     border: none;
     padding: 12px 18px;
     margin-top: 20px;
     border-radius: 8px;
-    color: white;
+    color: #5c3a21;
     font-weight: bold;
     cursor: pointer;
     transition: 0.2s;
 }
 
 .button:hover {
-    background-color: #d28bff;
+    background-color: #e0cda3;
+    /* crem mai închis la hover */
+}
+
+/* BUTON ȘTERGERE */
+.button-delete {
+    background-color: #f5e3d0;
+    /* crem mediu */
+    color: #8b5e3c;
+    /* maro închis pentru contrast */
+}
+
+.button-delete:hover {
+    background-color: #e0cda3;
+    /* crem mai închis la hover */
 }
 
 /* TABEL LISTĂ CĂRȚI */
 table {
     width: 100%;
     border-collapse: collapse;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 248, 240, 0.9);
+    /* crem foarte deschis */
     border-radius: 10px;
     overflow: hidden;
 }
@@ -78,13 +100,16 @@ th,
 td {
     padding: 12px;
     text-align: center;
+    color: #5c3a21;
 }
 
 th {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(245, 227, 208, 0.9);
+    /* crem mediu */
     font-size: 18px;
 }
 
 tr:nth-child(even) {
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(224, 205, 163, 0.5);
+    /* crem mai deschis la rânduri pare */
 }

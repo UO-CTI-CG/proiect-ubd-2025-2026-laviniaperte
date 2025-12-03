@@ -7,32 +7,32 @@ export default function BooksList() {
   const [books, setBooks] = useState([]);
   const navigate = useNavigate();
 
-  // Preia cărțile de la backend
   useEffect(() => {
-    axios.get("http://localhost:5000/books")
-      .then((res) => {
-        console.log("Cărți primite:", res.data); // verificare în consolă
+    const fetchBooks = async () => {
+      try {
+        const res = await axios.get("http://127.0.0.1:5000/books");
         setBooks(res.data);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error("Eroare la preluarea cărților:", err);
-      });
+        alert("Nu s-au putut încărca cărțile. Verifică serverul.");
+      }
+    };
+    fetchBooks();
   }, []);
 
-  // Șterge o carte
   const deleteBook = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/books/${id}`);
+      await axios.delete(`http://127.0.0.1:5000/books/${id}`);
       setBooks(books.filter((book) => book.id !== id));
     } catch (err) {
       console.error("Eroare la ștergerea cărții:", err);
+      alert("Nu s-a putut șterge cartea. Verifică serverul.");
     }
   };
 
   return (
     <div>
       <h1>Lista cărților</h1>
-
       <div style={{ textAlign: "center", marginBottom: 25 }}>
         <button className="button" onClick={() => navigate("/add-book")}>
           Adaugă o carte nouă
@@ -42,7 +42,7 @@ export default function BooksList() {
       <table>
         <thead>
           <tr>
-            <th>ID</th> {/* coloana cu numărul rândului */}
+            <th>ID</th>
             <th>Titlu</th>
             <th>Autor</th>
             <th>An</th>
@@ -52,7 +52,7 @@ export default function BooksList() {
         <tbody>
           {books.map((book, index) => (
             <tr key={book.id}>
-              <td>{index + 1}</td> {/* afișează 1, 2, 3… */}
+              <td>{index + 1}</td>
               <td>{book.title}</td>
               <td>{book.author}</td>
               <td>{book.year}</td>
@@ -65,7 +65,7 @@ export default function BooksList() {
                 </button>
                 <button
                   className="button"
-                  style={{ backgroundColor: "#d670ff" }}
+                  style={{ backgroundColor: "#433939ff" }}
                   onClick={() => deleteBook(book.id)}
                 >
                   Șterge
