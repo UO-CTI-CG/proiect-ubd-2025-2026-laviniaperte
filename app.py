@@ -3,11 +3,16 @@ from flask_cors import CORS
 import mysql.connector
 from mysql.connector import Error
 import os
+import jwt
+import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 # -------------------------
 #   INSTANȚĂ FLASK ȘI CORS
 # -------------------------
 app = Flask(__name__, static_folder=os.path.join("biblioteca-react", "client", "build"), static_url_path='/')
+app.config['SECRET_KEY'] = "secret_super_sigur_123"
 CORS(app)
 
 # -------------------------
@@ -224,6 +229,7 @@ def delete_loan(id):
         db.close()
     return jsonify({"message": "Împrumut șters"})
 
+
 # -------------------------
 #  SERVE STATIC REACT BUILD (SPA fallback)
 # -------------------------
@@ -235,6 +241,52 @@ def serve_react(path):
     if path != "" and os.path.exists(requested):
         return send_from_directory(build_dir, path)
     return send_from_directory(build_dir, 'index.html')
+
+@app.post("/login")
+def login():
+    data = request.json
+    username = data.get("username")
+    password = data.get("password")
+
+    db = get_connection()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM librarians WHERE username=%s", (username,))
+    librarian = cursor.fetchone()
+    cursor.close()
+    db.close()
+
+    if not librarian:
+        return jsonify({"error": "Utilizator inexistent"}), 401
+
+    if not check_password_hash(librarian["password"], password):
+        return jsonify({"error": "Parolă greșită"}), 401
+
+    token = jwt.encode({
+        "id": librarian["id"],
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=2)
+    }, app.config['SECRET_KEY'])
+
+    return jsonify({"token": token})
+
+@app.post("/signup")
+def signup():
+    data = request.json
+    username = data.get("username")
+    password = data.get("password")
+
+    hashed_password = generate_password_hash(password)
+
+    db = get_connection()
+    cursor = db.cursor()
+    cursor.execute(
+        "INSERT INTO librarians (username, password) VALUES (%s, %s)",
+        (username, hashed_password)
+    )
+    db.commit()
+    cursor.close()
+    db.close()
+
+    return jsonify({"message": "Cont creat cu succes"})
 
 # -------------------------
 #  PORNIRE SERVER
