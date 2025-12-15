@@ -15,33 +15,46 @@ export default function EditUser() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`http://127.0.0.1:5000/users/${id}`);
+        const token = localStorage.getItem("token");
+        const res = await axios.get(`http://127.0.0.1:5000/users/${id}`, {
+          headers: { "x-access-token": token }
+        });
         setUsername(res.data.username);
         setEmail(res.data.email || "");
         setPhone(res.data.phone || "");
         setAddress(res.data.address || "");
       } catch (err) {
         console.error("Eroare la încărcarea utilizatorului:", err);
-        alert("Nu s-a putut încărca utilizatorul. Verifică serverul.");
+        if (err.response && err.response.status === 401) {
+          alert("Nu ești autentificat. Te rog să te loghezi.");
+          navigate("/login");
+        } else {
+          alert("Nu s-a putut încărca utilizatorul. Verifică serverul.");
+        }
       }
     };
     fetchUser();
-  }, [id]);
+  }, [id, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://127.0.0.1:5000/users/${id}`, {
-        username,
-        email,
-        phone,
-        address,
-      });
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `http://127.0.0.1:5000/users/${id}`,
+        { username, email, phone, address },
+        { headers: { "x-access-token": token } }
+      );
       alert("Modificările au fost salvate!");
       navigate("/users");
     } catch (err) {
       console.error("Eroare la salvarea modificărilor:", err);
-      alert("Nu s-au putut salva modificările. Verifică serverul.");
+      if (err.response && err.response.status === 401) {
+        alert("Nu ești autentificat. Te rog să te loghezi.");
+        navigate("/login");
+      } else {
+        alert("Nu s-au putut salva modificările. Verifică serverul.");
+      }
     }
   };
 

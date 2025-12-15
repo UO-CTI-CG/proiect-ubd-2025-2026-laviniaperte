@@ -14,30 +14,44 @@ export default function EditBook() {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const res = await axios.get(`http://127.0.0.1:5000/books/${id}`);
+        const token = localStorage.getItem("token"); // preluare token
+        const res = await axios.get(`http://127.0.0.1:5000/books/${id}`, {
+          headers: { "x-access-token": token }
+        });
         setTitle(res.data.title);
         setAuthor(res.data.author);
         setYear(res.data.year);
       } catch (err) {
         console.error("Eroare la preluarea cărții:", err);
-        alert("Nu s-a putut încărca cartea. Verifică serverul.");
+        if (err.response && err.response.status === 401) {
+          alert("Nu ești autentificat. Te rog să te loghezi.");
+          navigate("/login");
+        } else {
+          alert("Nu s-a putut încărca cartea. Verifică serverul.");
+        }
       }
     };
     fetchBook();
-  }, [id]);
+  }, [id, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://127.0.0.1:5000/books/${id}`, {
-        title,
-        author,
-        year,
-      });
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `http://127.0.0.1:5000/books/${id}`,
+        { title, author, year },
+        { headers: { "x-access-token": token } }
+      );
       navigate("/books");
     } catch (err) {
       console.error("Eroare la salvarea modificărilor:", err);
-      alert("Nu s-au putut salva modificările. Verifică serverul.");
+      if (err.response && err.response.status === 401) {
+        alert("Nu ești autentificat. Te rog să te loghezi.");
+        navigate("/login");
+      } else {
+        alert("Nu s-au putut salva modificările. Verifică serverul.");
+      }
     }
   };
 

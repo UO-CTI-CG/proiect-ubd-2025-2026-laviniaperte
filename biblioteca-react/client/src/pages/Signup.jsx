@@ -10,10 +10,7 @@ export default function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://127.0.0.1:5000/signup", {
-        username,
-        password,
-      });
+      await axios.post("http://127.0.0.1:5000/signup", { username, password });
       alert("Cont creat. Te poți loga.");
       navigate("/login");
     } catch {

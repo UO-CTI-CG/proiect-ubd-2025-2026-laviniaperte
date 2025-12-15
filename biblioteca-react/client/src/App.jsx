@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -24,41 +24,43 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* PUBLIC */}
+        {/* PUBLIC ROUTES */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* PROTECTED */}
+        {/* PROTECTED ROUTES */}
         <Route
           path="/*"
           element={
             <ProtectedRoute>
               <>
                 <Navbar />
-
                 <Routes>
-                  {/* CĂRȚI */}
+                  {/* BOOKS */}
                   <Route path="/" element={<BooksList />} />
                   <Route path="/books" element={<BooksList />} />
                   <Route path="/add-book" element={<AddBook />} />
                   <Route path="/edit-book/:id" element={<EditBook />} />
 
-                  {/* UTILIZATORI */}
+                  {/* USERS */}
                   <Route path="/users" element={<Users />} />
                   <Route path="/add-user" element={<AddUser />} />
                   <Route path="/edit-user/:id" element={<EditUser />} />
 
-                  {/* ÎMPRUMUTURI */}
+                  {/* LOANS */}
                   <Route path="/loans" element={<Loans />} />
                   <Route path="/add-loan" element={<AddLoan />} />
 
-                  {/* FALLBACK */}
-                  <Route path="*" element={<BooksList />} />
+                  {/* FALLBACK: orice rută necunoscută */}
+                  <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </>
             </ProtectedRoute>
           }
         />
+
+        {/* FALLBACK GENERAL: dacă nu se potrivește nimic */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );

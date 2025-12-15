@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login"); // redirect dacă nu e token
+    } else {
+      fetchUsers(token);
+    }
+  }, [navigate]);
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (token) => {
     try {
-      const res = await axios.get("http://127.0.0.1:5000/users");
+      const res = await axios.get("http://127.0.0.1:5000/users", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setUsers(res.data);
     } catch (err) {
       console.error(err);
@@ -21,8 +29,16 @@ export default function Users() {
   };
 
   const deleteUser = async (id) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
     try {
-      await axios.delete(`http://127.0.0.1:5000/users/${id}`);
+      await axios.delete(`http://127.0.0.1:5000/users/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setUsers(users.filter((u) => u.id !== id));
     } catch (err) {
       console.error(err);

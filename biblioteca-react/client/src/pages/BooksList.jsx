@@ -10,23 +10,39 @@ export default function BooksList() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const res = await axios.get("http://127.0.0.1:5000/books");
+        const token = localStorage.getItem("token"); // preluare token
+        const res = await axios.get("http://127.0.0.1:5000/books", {
+          headers: { "x-access-token": token }
+        });
         setBooks(res.data);
       } catch (err) {
         console.error("Eroare la preluarea cărților:", err);
-        alert("Nu s-au putut încărca cărțile. Verifică serverul.");
+        if (err.response && err.response.status === 401) {
+          alert("Nu ești autentificat. Te rog să te loghezi.");
+          navigate("/login");
+        } else {
+          alert("Nu s-au putut încărca cărțile. Verifică serverul.");
+        }
       }
     };
     fetchBooks();
-  }, []);
+  }, [navigate]);
 
   const deleteBook = async (id) => {
     try {
-      await axios.delete(`http://127.0.0.1:5000/books/${id}`);
+      const token = localStorage.getItem("token");
+      await axios.delete(`http://127.0.0.1:5000/books/${id}`, {
+        headers: { "x-access-token": token }
+      });
       setBooks(books.filter((book) => book.id !== id));
     } catch (err) {
       console.error("Eroare la ștergerea cărții:", err);
-      alert("Nu s-a putut șterge cartea. Verifică serverul.");
+      if (err.response && err.response.status === 401) {
+        alert("Nu ești autentificat. Te rog să te loghezi.");
+        navigate("/login");
+      } else {
+        alert("Nu s-a putut șterge cartea. Verifică serverul.");
+      }
     }
   };
 

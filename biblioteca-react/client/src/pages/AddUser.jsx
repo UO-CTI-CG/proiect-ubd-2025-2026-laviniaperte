@@ -21,19 +21,22 @@ export default function AddUser() {
     }
 
     try {
-      const res = await axios.post("http://127.0.0.1:5000/users", {
-        username,
-        email,
-        phone,
-        address
-      });
+      const token = localStorage.getItem("token"); // preluare token
+      const res = await axios.post(
+        "http://127.0.0.1:5000/users",
+        { username, email, phone, address },
+        { headers: { "x-access-token": token } } // trimitere token
+      );
 
       if (res.status === 201) {
         navigate("/users");
       }
     } catch (err) {
       console.error(err);
-      if (err.response && err.response.data && err.response.data.error) {
+      if (err.response && err.response.status === 401) {
+        alert("Nu ești autentificat. Te rog să te loghezi.");
+        navigate("/login");
+      } else if (err.response && err.response.data && err.response.data.error) {
         setErrorMsg(err.response.data.error);
       } else {
         setErrorMsg("Nu s-a putut adăuga utilizatorul.");

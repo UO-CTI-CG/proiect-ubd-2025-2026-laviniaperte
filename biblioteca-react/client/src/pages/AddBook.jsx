@@ -12,11 +12,23 @@ export default function AddBook() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://127.0.0.1:5000/books", { title, author, year });
+      const token = localStorage.getItem("token"); // preluare token
+      await axios.post(
+        "http://127.0.0.1:5000/books",
+        { title, author, year },
+        {
+          headers: { "x-access-token": token } // trimitere token în header
+        }
+      );
       navigate("/books");
     } catch (error) {
       console.error("Eroare la adăugarea cărții:", error);
-      alert("Nu s-a putut adăuga cartea. Verifică dacă serverul este pornit.");
+      if (error.response && error.response.status === 401) {
+        alert("Nu ești autentificat. Te rog să te loghezi.");
+        navigate("/login");
+      } else {
+        alert("Nu s-a putut adăuga cartea. Verifică serverul.");
+      }
     }
   };
 

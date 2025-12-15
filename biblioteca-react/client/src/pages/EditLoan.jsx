@@ -11,33 +11,74 @@ export default function EditLoan() {
   const [loan, setLoan] = useState({ user_id: "", book_id: "", date: "" });
 
   useEffect(() => {
-    // Preluăm utilizatorii și cărțile pentru dropdown
-    axios.get("http://127.0.0.1:5000/users")
-      .then(res => setUsers(res.data))
-      .catch(err => alert("Nu s-au putut încărca utilizatorii."));
+    const token = localStorage.getItem("token");
 
-    axios.get("http://127.0.0.1:5000/books")
+    // Preluăm utilizatorii
+    axios.get("http://127.0.0.1:5000/users", {
+      headers: { "x-access-token": token }
+    })
+      .then(res => setUsers(res.data))
+      .catch(err => {
+        console.error(err);
+        if (err.response && err.response.status === 401) {
+          alert("Nu ești autentificat. Te rog să te loghezi.");
+          navigate("/login");
+        } else {
+          alert("Nu s-au putut încărca utilizatorii.");
+        }
+      });
+
+    // Preluăm cărțile
+    axios.get("http://127.0.0.1:5000/books", {
+      headers: { "x-access-token": token }
+    })
       .then(res => setBooks(res.data))
-      .catch(err => alert("Nu s-au putut încărca cărțile."));
+      .catch(err => {
+        console.error(err);
+        if (err.response && err.response.status === 401) {
+          alert("Nu ești autentificat. Te rog să te loghezi.");
+          navigate("/login");
+        } else {
+          alert("Nu s-au putut încărca cărțile.");
+        }
+      });
 
     // Preluăm datele împrumutului existent
-    axios.get(`http://127.0.0.1:5000/loans/${id}`)
+    axios.get(`http://127.0.0.1:5000/loans/${id}`, {
+      headers: { "x-access-token": token }
+    })
       .then(res => setLoan({
         user_id: res.data.user_id,
         book_id: res.data.book_id,
         date: res.data.date
       }))
-      .catch(err => alert("Nu s-a putut încărca împrumutul."));
-  }, [id]);
+      .catch(err => {
+        console.error(err);
+        if (err.response && err.response.status === 401) {
+          alert("Nu ești autentificat. Te rog să te loghezi.");
+          navigate("/login");
+        } else {
+          alert("Nu s-a putut încărca împrumutul.");
+        }
+      });
+  }, [id, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://127.0.0.1:5000/loans/${id}`, loan);
+      const token = localStorage.getItem("token");
+      await axios.put(`http://127.0.0.1:5000/loans/${id}`, loan, {
+        headers: { "x-access-token": token }
+      });
       navigate("/loans");
     } catch (err) {
       console.error("Eroare la salvarea modificărilor:", err);
-      alert("Nu s-au putut salva modificările. Verifică serverul.");
+      if (err.response && err.response.status === 401) {
+        alert("Nu ești autentificat. Te rog să te loghezi.");
+        navigate("/login");
+      } else {
+        alert("Nu s-au putut salva modificările. Verifică serverul.");
+      }
     }
   };
 
@@ -70,7 +111,7 @@ export default function EditLoan() {
           type="date" 
           value={loan.date} 
           onChange={e => setLoan({ ...loan, date: e.target.value })} 
-          required 
+          required
         />
 
         <button className="button" type="submit">Salvează modificările</button>

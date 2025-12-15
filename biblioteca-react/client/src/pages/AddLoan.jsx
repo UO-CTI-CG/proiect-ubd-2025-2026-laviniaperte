@@ -9,23 +9,43 @@ export default function AddLoan() {
   const [loan, setLoan] = useState({ user_id: "", book_id: "", loan_date: "", return_date: "" });
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:5000/users")
-      .then(res => setUsers(res.data))
-      .catch(err => alert("Nu s-au putut încărca utilizatorii."));
+    const token = localStorage.getItem("token"); // preluare token
 
-    axios.get("http://127.0.0.1:5000/books")
+    axios.get("http://127.0.0.1:5000/users", { headers: { "x-access-token": token } })
+      .then(res => setUsers(res.data))
+      .catch(err => {
+        console.error(err);
+        alert("Nu s-au putut încărca utilizatorii. Verifică dacă ești logat.");
+        navigate("/login");
+      });
+
+    axios.get("http://127.0.0.1:5000/books", { headers: { "x-access-token": token } })
       .then(res => setBooks(res.data))
-      .catch(err => alert("Nu s-au putut încărca cărțile."));
-  }, []);
+      .catch(err => {
+        console.error(err);
+        alert("Nu s-au putut încărca cărțile. Verifică dacă ești logat.");
+        navigate("/login");
+      });
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://127.0.0.1:5000/loans", loan);
+      const token = localStorage.getItem("token");
+      await axios.post(
+        "http://127.0.0.1:5000/loans",
+        loan,
+        { headers: { "x-access-token": token } }
+      );
       navigate("/loans");
     } catch (error) {
       console.error("Eroare la adăugarea împrumutului:", error);
-      alert("Nu s-a putut salva împrumutul. Verifică serverul.");
+      if (error.response && error.response.status === 401) {
+        alert("Nu ești autentificat. Te rog să te loghezi.");
+        navigate("/login");
+      } else {
+        alert("Nu s-a putut salva împrumutul. Verifică serverul.");
+      }
     }
   };
 

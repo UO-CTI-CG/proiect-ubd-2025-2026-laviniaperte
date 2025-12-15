@@ -1,30 +1,53 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Loans() {
   const [loans, setLoans] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:5000/loans")
+    const token = localStorage.getItem("token");
+
+    axios.get("http://127.0.0.1:5000/loans", {
+      headers: { "x-access-token": token }
+    })
       .then(res => setLoans(res.data))
-      .catch(err => alert("Nu s-au putut încărca împrumuturile."));
-  }, []);
+      .catch(err => {
+        console.error("Eroare la încărcarea împrumuturilor:", err);
+        if (err.response && err.response.status === 401) {
+          alert("Nu ești autentificat. Te rog să te loghezi.");
+          navigate("/login");
+        } else {
+          alert("Nu s-au putut încărca împrumuturile.");
+        }
+      });
+  }, [navigate]);
 
   const deleteLoan = async (id) => {
+    const token = localStorage.getItem("token");
     try {
-      await axios.delete(`http://127.0.0.1:5000/loans/${id}`);
+      await axios.delete(`http://127.0.0.1:5000/loans/${id}`, {
+        headers: { "x-access-token": token }
+      });
       setLoans(loans.filter(l => l.id !== id));
     } catch (err) {
       console.error("Eroare la ștergerea împrumutului:", err);
-      alert("Nu s-a putut șterge împrumutul.");
+      if (err.response && err.response.status === 401) {
+        alert("Nu ești autentificat. Te rog să te loghezi.");
+        navigate("/login");
+      } else {
+        alert("Nu s-a putut șterge împrumutul.");
+      }
     }
   };
 
   return (
     <div>
       <h1>Împrumuturi</h1>
-      <Link to="/add-loan"><button className="button">Adaugă Împrumut</button></Link>
+      <Link to="/add-loan">
+        <button className="button">Adaugă Împrumut</button>
+      </Link>
       <table>
         <thead>
           <tr>
