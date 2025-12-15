@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Loans() {
   const [loans, setLoans] = useState([]);
@@ -8,46 +8,28 @@ export default function Loans() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-
-    axios.get("http://127.0.0.1:5000/loans", {
-      headers: { "x-access-token": token }
-    })
+    axios.get("http://127.0.0.1:5000/loans", { headers: { "x-access-token": token } })
       .then(res => setLoans(res.data))
       .catch(err => {
-        console.error("Eroare la încărcarea împrumuturilor:", err);
-        if (err.response && err.response.status === 401) {
-          alert("Nu ești autentificat. Te rog să te loghezi.");
-          navigate("/login");
-        } else {
-          alert("Nu s-au putut încărca împrumuturile.");
-        }
+        console.error(err);
+        if (err.response && err.response.status === 401) navigate("/login");
       });
   }, [navigate]);
 
   const deleteLoan = async (id) => {
     const token = localStorage.getItem("token");
     try {
-      await axios.delete(`http://127.0.0.1:5000/loans/${id}`, {
-        headers: { "x-access-token": token }
-      });
+      await axios.delete(`http://127.0.0.1:5000/loans/${id}`, { headers: { "x-access-token": token } });
       setLoans(loans.filter(l => l.id !== id));
     } catch (err) {
-      console.error("Eroare la ștergerea împrumutului:", err);
-      if (err.response && err.response.status === 401) {
-        alert("Nu ești autentificat. Te rog să te loghezi.");
-        navigate("/login");
-      } else {
-        alert("Nu s-a putut șterge împrumutul.");
-      }
+      console.error(err);
     }
   };
 
   return (
     <div>
       <h1>Împrumuturi</h1>
-      <Link to="/add-loan">
-        <button className="button">Adaugă Împrumut</button>
-      </Link>
+      <Link to="/add-loan"><button className="button">Adaugă Împrumut</button></Link>
       <table>
         <thead>
           <tr>
@@ -68,6 +50,7 @@ export default function Loans() {
               <td>{l.loan_date}</td>
               <td>{l.return_date || "-"}</td>
               <td>
+                <Link to={`/edit-loan/${l.id}`}><button className="button">Edit</button></Link>
                 <button className="delete-btn" onClick={() => deleteLoan(l.id)}>Șterge</button>
               </td>
             </tr>

@@ -5,18 +5,28 @@ import { useNavigate } from "react-router-dom";
 
 export default function BooksList() {
   const [books, setBooks] = useState([]);
+  const [loans, setLoans] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchBooks = async () => {
+    const fetchBooksAndLoans = async () => {
       try {
         const token = localStorage.getItem("token"); // preluare token
-        const res = await axios.get("http://127.0.0.1:5000/books", {
+
+        // Preluare cărți
+        const resBooks = await axios.get("http://127.0.0.1:5000/books", {
           headers: { "x-access-token": token }
         });
-        setBooks(res.data);
+        setBooks(resBooks.data);
+
+        // Preluare împrumuturi
+        const resLoans = await axios.get("http://127.0.0.1:5000/loans", {
+          headers: { "x-access-token": token }
+        });
+        setLoans(resLoans.data);
+
       } catch (err) {
-        console.error("Eroare la preluarea cărților:", err);
+        console.error("Eroare la preluarea cărților sau împrumuturilor:", err);
         if (err.response && err.response.status === 401) {
           alert("Nu ești autentificat. Te rog să te loghezi.");
           navigate("/login");
@@ -25,7 +35,7 @@ export default function BooksList() {
         }
       }
     };
-    fetchBooks();
+    fetchBooksAndLoans();
   }, [navigate]);
 
   const deleteBook = async (id) => {
@@ -46,6 +56,14 @@ export default function BooksList() {
     }
   };
 
+  // Helper pentru a determina statusul unei cărți
+  const getBookStatus = (bookId) => {
+    const loan = loans.find(
+      (l) => l.book_id === bookId && (!l.return_date || new Date(l.return_date) > new Date())
+    );
+    return loan ? "Împrumutată" : "Disponibilă";
+  };
+
   return (
     <div>
       <h1>Lista cărților</h1>
@@ -62,6 +80,7 @@ export default function BooksList() {
             <th>Titlu</th>
             <th>Autor</th>
             <th>An</th>
+            <th>Status</th> {/* coloana nouă */}
             <th>Acțiuni</th>
           </tr>
         </thead>
@@ -72,6 +91,7 @@ export default function BooksList() {
               <td>{book.title}</td>
               <td>{book.author}</td>
               <td>{book.year}</td>
+              <td>{getBookStatus(book.id)}</td> {/* afișare status */}
               <td>
                 <button
                   className="button"

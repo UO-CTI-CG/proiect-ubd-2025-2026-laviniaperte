@@ -17,6 +17,7 @@ import EditUser from "./pages/EditUser";
 
 import Loans from "./pages/Loans";
 import AddLoan from "./pages/AddLoan";
+import EditLoan from "./pages/EditLoan"; // ruta nouă pentru editare împrumut
 
 import "./styles/library.css";
 
@@ -24,11 +25,11 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* PUBLIC ROUTES */}
+        {/* ROUTE PUBLICE */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* PROTECTED ROUTES */}
+        {/* ROUTE PROTEJATE */}
         <Route
           path="/*"
           element={
@@ -36,20 +37,21 @@ export default function App() {
               <>
                 <Navbar />
                 <Routes>
-                  {/* BOOKS */}
+                  {/* CĂRȚI */}
                   <Route path="/" element={<BooksList />} />
                   <Route path="/books" element={<BooksList />} />
                   <Route path="/add-book" element={<AddBook />} />
                   <Route path="/edit-book/:id" element={<EditBook />} />
 
-                  {/* USERS */}
+                  {/* UTILIZATORI */}
                   <Route path="/users" element={<Users />} />
                   <Route path="/add-user" element={<AddUser />} />
                   <Route path="/edit-user/:id" element={<EditUser />} />
 
-                  {/* LOANS */}
+                  {/* ÎMPRUMUTURI */}
                   <Route path="/loans" element={<Loans />} />
                   <Route path="/add-loan" element={<AddLoan />} />
+                  <Route path="/edit-loan/:id" element={<EditLoan />} />
 
                   {/* FALLBACK: orice rută necunoscută */}
                   <Route path="*" element={<Navigate to="/" replace />} />
@@ -59,7 +61,7 @@ export default function App() {
           }
         />
 
-        {/* FALLBACK GENERAL: dacă nu se potrivește nimic */}
+        {/* FALLBACK GENERAL */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>

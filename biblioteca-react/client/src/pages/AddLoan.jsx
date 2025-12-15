@@ -30,6 +30,10 @@ export default function AddLoan() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!loan.book_id) {
+      alert("Alege o carte disponibilă pentru împrumut!");
+      return;
+    }
     try {
       const token = localStorage.getItem("token");
       await axios.post(
@@ -62,7 +66,15 @@ export default function AddLoan() {
         <label>Carte:</label>
         <select value={loan.book_id} onChange={e => setLoan({ ...loan, book_id: e.target.value })} required>
           <option value="">Selectează carte</option>
-          {books.map(b => <option key={b.id} value={b.id}>{b.title}</option>)}
+          {books.map(b => (
+            <option 
+              key={b.id} 
+              value={b.id} 
+              disabled={b.status === "Împrumutată"} // dezactivează cărțile împrumutate
+            >
+              {b.title} {b.status === "Împrumutată" ? "(Împrumutată)" : ""}
+            </option>
+          ))}
         </select>
 
         <label>Data împrumut:</label>
