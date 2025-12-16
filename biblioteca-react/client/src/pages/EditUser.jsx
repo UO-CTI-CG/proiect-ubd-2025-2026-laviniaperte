@@ -59,36 +59,47 @@ export default function EditUser() {
   };
 
   return (
-    <div>
-      <h2>Editează Utilizator</h2>
-      <form onSubmit={handleSubmit}>
-        <label>Username:</label>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <label>Telefon:</label>
-        <input
-          type="text"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-        <label>Adresă:</label>
-        <input
-          type="text"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        <button type="submit" className="button">Salvează modificările</button>
-      </form>
+    <div className="page-container">
+      <div className="card">
+
+        <h1>Editează utilizator</h1>
+
+        <form onSubmit={handleSubmit}>
+          <label>Username:</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <label>Telefon:</label>
+          <input
+            type="text"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+
+          <label>Adresă:</label>
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+
+          <button type="submit" className="button">
+            Salvează modificările
+          </button>
+        </form>
+
+      </div>
     </div>
   );
 }

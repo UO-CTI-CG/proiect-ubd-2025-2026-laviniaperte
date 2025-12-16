@@ -1,29 +1,35 @@
-/* FUNDAL PAGINĂ */
+/* =========================
+   FUNDAL PAGINĂ ȘI FONT
+========================= */
 body {
     margin: 0;
     padding: 0;
-    background-color: #fdf6f0;
-    /* crem deschis */
+    background-color: #e6d3bf;
+    /* maro-crem mai închis pentru pagină */
     font-family: Arial, sans-serif;
     min-height: 100vh;
     color: #5c3a21;
     /* text maro închis */
 }
 
-/* CONTAINER PAGINI */
+/* =========================
+   CONTAINER PAGINI
+========================= */
 div {
-    width: 90%;
-    max-width: 700px;
-    margin: 30px auto;
-    background: rgba(255, 248, 240, 0.85);
+    width: 95%;
+    max-width: 1100px;
+    /* mai lat pentru liste și formulare */
+    margin: 25px auto;
+    background: #fdf6f0;
     /* crem foarte deschis */
-    padding: 25px;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    color: #5c3a21;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(92, 58, 33, 0.15);
 }
 
-/* TITLURI */
+/* =========================
+   TITLURI
+========================= */
 h1 {
     text-align: center;
     margin-bottom: 25px;
@@ -32,7 +38,9 @@ h1 {
     /* crem-maro */
 }
 
-/* FORMULAR */
+/* =========================
+   FORMULARE
+========================= */
 form {
     display: flex;
     flex-direction: column;
@@ -43,7 +51,8 @@ label {
     font-size: 16px;
 }
 
-input {
+input,
+select {
     padding: 10px;
     margin-top: 6px;
     font-size: 16px;
@@ -54,8 +63,11 @@ input {
     color: #5c3a21;
 }
 
-/* BUTOANE GENERALE */
-.button {
+/* =========================
+   BUTOANE GENERALE
+========================= */
+.button,
+.btn-primary {
     background-color: #f5e3d0;
     /* crem mediu */
     border: none;
@@ -68,48 +80,194 @@ input {
     transition: 0.2s;
 }
 
-.button:hover {
+.button:hover,
+.btn-primary:hover {
     background-color: #e0cda3;
     /* crem mai închis la hover */
 }
 
-/* BUTON ȘTERGERE */
-.button-delete {
-    background-color: #f5e3d0;
-    /* crem mediu */
-    color: #8b5e3c;
-    /* maro închis pentru contrast */
+/* =========================
+   BUTOANE SPECIALE
+========================= */
+.btn-edit {
+    background-color: #6b8e8e;
+    /* albastru-verde închis */
+    color: white;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
-.button-delete:hover {
-    background-color: #e0cda3;
-    /* crem mai închis la hover */
+.btn-edit:hover {
+    background-color: #567575;
 }
 
-/* TABEL LISTĂ CĂRȚI */
+.btn-delete,
+.delete-btn {
+    background-color: #b85c5c;
+    color: white;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-delete:hover,
+.delete-btn:hover {
+    background-color: #9e4747;
+}
+
+/* =========================
+   TABEL LISTE (BOOKS, USERS, LOANS)
+========================= */
 table {
     width: 100%;
-    border-collapse: collapse;
-    background: rgba(255, 248, 240, 0.9);
-    /* crem foarte deschis */
-    border-radius: 10px;
+    margin-top: 20px;
+    background: #fff8f0;
+    /* crem deschis tabel */
+    border-radius: 14px;
     overflow: hidden;
+    box-shadow: 0 6px 18px rgba(92, 58, 33, 0.12);
+    border-collapse: collapse;
 }
 
 th,
 td {
-    padding: 12px;
+    padding: 14px;
     text-align: center;
     color: #5c3a21;
 }
 
 th {
-    background: rgba(245, 227, 208, 0.9);
-    /* crem mediu */
-    font-size: 18px;
+    background-color: #e0c1a1;
+    /* maro-crem mai închis */
+    font-size: 17px;
 }
 
 tr:nth-child(even) {
-    background: rgba(224, 205, 163, 0.5);
-    /* crem mai deschis la rânduri pare */
+    background-color: #f3e3d3;
+    /* rânduri pare */
+}
+
+tr:nth-child(odd) {
+    background-color: #fff8f0;
+    /* rânduri impare */
+}
+
+tr:hover {
+    background-color: rgba(224, 205, 163, 0.35);
+    transition: 0.2s;
+}
+
+/* =========================
+   STATUS CARTE
+========================= */
+.status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.status.available {
+    background-color: #d8eadf;
+    color: #256029;
+}
+
+.status.borrowed {
+    background-color: #f3c7c3;
+    color: #7a1c1c;
+}
+
+/* =========================
+   LAYOUT PAGINI LISTĂ
+========================= */
+.page-container {
+    width: 95%;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 18px;
+}
+
+.card {
+    background: rgba(255, 248, 240, 0.95);
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+/* 
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}  */
+
+.page-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.page-header button {
+    position: absolute;
+    right: 1rem;
+}
+
+.actions-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.table-wrapper {
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.actions-cell {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* =========================
+   BUTOANE ADITIONALE
+========================= */
+.primary-btn {
+    background-color: #d4a373;
+    color: #604534;
+}
+
+.primary-btn:hover {
+    background-color: #c18b5f;
+}
+
+.small-btn {
+    padding: 8px 14px;
+    font-size: 14px;
+    background-color: #c9a27e;
+    /* maro-crem mai închis */
+    color: #3b2416;
+}
+
+.small-btn:hover {
+    background-color: #b58b64;
+}
+
+/* =========================
+   ERORI
+========================= */
+.error-box {
+    background-color: #f2dede;
+    color: #7a2e2e;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
 }

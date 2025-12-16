@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import "../styles/library.css";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -10,7 +11,7 @@ export default function Users() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/login"); // redirect dacă nu e token
+      navigate("/login");
     } else {
       fetchUsers(token);
     }
@@ -47,49 +48,62 @@ export default function Users() {
   };
 
   return (
-    <div>
-      <h1>Utilizatori</h1>
-      {errorMsg && <div style={{ color: "red", marginBottom: "10px" }}>{errorMsg}</div>}
+    <div className="page-container dark-bg">
+      <div className="card light-bg">
+        {/* HEADER */}
+        <div className="page-header">
+          <h1>Utilizatori</h1>
+          <button
+            className="btn-primary"
+            onClick={() => navigate("/add-user")}
+          >
+            Adaugă utilizator
+          </button>
+        </div>
 
-      <Link to="/add-user">
-        <button className="button">Adaugă Utilizator</button>
-      </Link>
+        {errorMsg && <div className="error-box">{errorMsg}</div>}
 
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Telefon</th>
-            <th>Adresă</th>
-            <th>Acțiuni</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((u) => (
-            <tr key={u.id}>
-              <td>{u.id}</td>
-              <td>{u.username}</td>
-              <td>{u.email}</td>
-              <td>{u.phone}</td>
-              <td>{u.address}</td>
-              <td>
-                <Link to={`/edit-user/${u.id}`}>
-                  <button className="button">Editează</button>
-                </Link>
-                <button
-                  className="button delete-btn"
-                  onClick={() => deleteUser(u.id)}
-                  style={{ marginLeft: "5px", backgroundColor: "#4c2323ff", color: "#fff" }}
-                >
-                  Șterge
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        {/* TABEL */}
+        <div className="table-wrapper">
+          <table className="styled-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Telefon</th>
+                <th>Adresă</th>
+                <th>Acțiuni</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((u, index) => (
+                <tr key={u.id}>
+                  <td>{index + 1}</td>
+                  <td>{u.username}</td>
+                  <td>{u.email}</td>
+                  <td>{u.phone}</td>
+                  <td>{u.address}</td>
+                  <td className="actions-cell">
+                    <button
+                      className="btn-edit"
+                      onClick={() => navigate(`/edit-user/${u.id}`)}
+                    >
+                      Editează
+                    </button>
+                    <button
+                      className="btn-delete"
+                      onClick={() => deleteUser(u.id)}
+                    >
+                      Șterge
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

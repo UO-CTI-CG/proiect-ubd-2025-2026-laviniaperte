@@ -1,4 +1,4 @@
-/* Navbar.css */
+/* src/components/Navbar.css */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -18,20 +18,37 @@
 }
 
 .nav-links {
-    list-style: none;
     display: flex;
-    gap: 15px;
+    gap: 12px;
 }
 
-.nav-links li a {
+.nav-links a {
     text-decoration: none;
     color: #8b5e3c;
-    /* crem închis */
     font-weight: 500;
-    transition: color 0.2s;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s, color 0.2s;
 }
 
-.nav-links li a:hover {
-    color: #d2b48c;
-    /* crem mediu la hover */
+.nav-links a:hover {
+    background-color: #f5e3d0;
+    /* crem mediu */
+    color: #5c3a21;
+    /* maro închis */
+}
+
+.nav-links button {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: none;
+    background-color: #8b5e3c;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.nav-links button:hover {
+    background-color: #755b3a;
 }

@@ -1,3 +1,4 @@
+// src/components/Navbar.jsx
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
@@ -17,20 +18,7 @@ export default function Navbar() {
         <Link to="/">Cărți</Link>
         <Link to="/users">Utilizatori</Link>
         <Link to="/loans">Împrumuturi</Link>
-        <button 
-          onClick={logout} 
-          style={{
-            marginLeft: "15px",
-            padding: "5px 10px",
-            cursor: "pointer",
-            backgroundColor: "#8b5e3c",
-            color: "#fff",
-            border: "none",
-            borderRadius: "4px"
-          }}
-        >
-          Logout
-        </button>
+        <button onClick={logout}>Logout</button>
       </div>
     </nav>
   );

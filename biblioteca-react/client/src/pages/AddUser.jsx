@@ -21,11 +21,11 @@ export default function AddUser() {
     }
 
     try {
-      const token = localStorage.getItem("token"); // preluare token
+      const token = localStorage.getItem("token");
       const res = await axios.post(
         "http://127.0.0.1:5000/users",
         { username, email, phone, address },
-        { headers: { "x-access-token": token } } // trimitere token
+        { headers: { "x-access-token": token } }
       );
 
       if (res.status === 201) {
@@ -36,7 +36,7 @@ export default function AddUser() {
       if (err.response && err.response.status === 401) {
         alert("Nu ești autentificat. Te rog să te loghezi.");
         navigate("/login");
-      } else if (err.response && err.response.data && err.response.data.error) {
+      } else if (err.response?.data?.error) {
         setErrorMsg(err.response.data.error);
       } else {
         setErrorMsg("Nu s-a putut adăuga utilizatorul.");
@@ -45,41 +45,49 @@ export default function AddUser() {
   };
 
   return (
-    <div>
-      <h2>Adaugă Utilizator</h2>
-      {errorMsg && <div style={{ color: "red", marginBottom: "10px" }}>{errorMsg}</div>}
-      <form onSubmit={handleSubmit}>
-        <label>Username:</label>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
+    <div className="page-container">
+      <div className="card">
 
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <h1>Adaugă utilizator</h1>
 
-        <label>Telefon:</label>
-        <input
-          type="text"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
+        {errorMsg && <div className="error-box">{errorMsg}</div>}
 
-        <label>Adresă:</label>
-        <input
-          type="text"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
+        <form onSubmit={handleSubmit}>
+          <label>Username:</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
 
-        <button type="submit" className="button">Adaugă Utilizator</button>
-      </form>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <label>Telefon:</label>
+          <input
+            type="text"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+
+          <label>Adresă:</label>
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+
+          <button type="submit" className="button">
+            Adaugă Utilizator
+          </button>
+        </form>
+
+      </div>
     </div>
   );
 }
