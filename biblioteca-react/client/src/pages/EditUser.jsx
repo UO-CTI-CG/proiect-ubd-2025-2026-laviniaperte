@@ -11,13 +11,14 @@ export default function EditUser() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [errorMsg, setErrorMsg] = useState(""); // mesajul de eroare
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(`http://127.0.0.1:5000/users/${id}`, {
-          headers: { "x-access-token": token }
+          headers: { "Authorization": `Bearer ${token}` },
         });
         setUsername(res.data.username);
         setEmail(res.data.email || "");
@@ -26,34 +27,32 @@ export default function EditUser() {
       } catch (err) {
         console.error("Eroare la încărcarea utilizatorului:", err);
         if (err.response && err.response.status === 401) {
-          alert("Nu ești autentificat. Te rog să te loghezi.");
-          navigate("/login");
+          setErrorMsg("Nu ești autentificat. Te rog să te loghezi.");
         } else {
-          alert("Nu s-a putut încărca utilizatorul. Verifică serverul.");
+          setErrorMsg("Nu s-a putut încărca utilizatorul. Verifică serverul.");
         }
       }
     };
     fetchUser();
-  }, [id, navigate]);
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMsg(""); // reset mesaj anterior
     try {
       const token = localStorage.getItem("token");
       await axios.put(
         `http://127.0.0.1:5000/users/${id}`,
         { username, email, phone, address },
-        { headers: { "x-access-token": token } }
+        { headers: { "Authorization": `Bearer ${token}` } }
       );
-      alert("Modificările au fost salvate!");
       navigate("/users");
     } catch (err) {
       console.error("Eroare la salvarea modificărilor:", err);
-      if (err.response && err.response.status === 401) {
-        alert("Nu ești autentificat. Te rog să te loghezi.");
-        navigate("/login");
+      if (err.response && err.response.data && err.response.data.error) {
+        setErrorMsg(err.response.data.error); // mesaj de la backend
       } else {
-        alert("Nu s-au putut salva modificările. Verifică serverul.");
+        setErrorMsg("Nu s-au putut salva modificările. Verifică serverul.");
       }
     }
   };
@@ -61,8 +60,10 @@ export default function EditUser() {
   return (
     <div className="page-container">
       <div className="card">
-
         <h1>Editează utilizator</h1>
+
+        {/* Mesajul de eroare, afișat sub titlu */}
+        {errorMsg && <div className="error-box" style={{ marginBottom: "15px" }}>{errorMsg}</div>}
 
         <form onSubmit={handleSubmit}>
           <label>Username:</label>
@@ -78,6 +79,7 @@ export default function EditUser() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
 
           <label>Telefon:</label>
@@ -98,7 +100,6 @@ export default function EditUser() {
             Salvează modificările
           </button>
         </form>
-
       </div>
     </div>
   );

@@ -119,19 +119,37 @@ def get_user(id):
         return jsonify(user)
     return jsonify({"error": "User not found"}), 404
 
+from mysql.connector import IntegrityError
+
 @app.post('/users')
 def add_user():
     data = request.json
+    username = data.get("username")
+    email = data.get("email")
     try:
         db = get_connection()
         cursor = db.cursor()
-        cursor.execute("INSERT INTO users (username, email, phone, address) VALUES (%s, %s, %s, %s)",
-                       (data.get("username"), data.get("email"), data.get("phone"), data.get("address")))
+
+        cursor.execute(
+            "INSERT INTO users (username, email, phone, address) VALUES (%s, %s, %s, %s)",
+            (username, email, data.get("phone"), data.get("address"))
+        )
         db.commit()
+        return jsonify({"message": "Utilizator adăugat cu succes"}), 201
+
+    except IntegrityError as e:
+        if "unique_email" in str(e):
+            return jsonify({"error": "Acest email este deja folosit de alt utilizator."}), 400
+        if "unique_username_email" in str(e):
+            return jsonify({"error": "Această combinație de username și email există deja."}), 400
+        return jsonify({"error": "A apărut o eroare la adăugarea utilizatorului."}), 400
+
     finally:
         cursor.close()
         db.close()
-    return jsonify({"message": "User added"}), 201
+
+
+from mysql.connector import IntegrityError
 
 @app.put('/users/<int:id>')
 def update_user(id):
@@ -139,13 +157,24 @@ def update_user(id):
     try:
         db = get_connection()
         cursor = db.cursor()
-        cursor.execute("UPDATE users SET username=%s, email=%s, phone=%s, address=%s WHERE id=%s",
-                       (data["username"], data.get("email"), data.get("phone"), data.get("address"), id))
+
+        cursor.execute(
+            "UPDATE users SET username=%s, email=%s, phone=%s, address=%s WHERE id=%s",
+            (data["username"], data.get("email"), data.get("phone"), data.get("address"), id)
+        )
         db.commit()
+        return jsonify({"message": "Modificările au fost salvate cu succes."})
+
+    except IntegrityError as e:
+        if "unique_email" in str(e):
+            return jsonify({"error": "Acest email este deja folosit de alt utilizator."}), 400
+        if "unique_username_email" in str(e):
+            return jsonify({"error": "Această combinație de username și email există deja."}), 400
+        return jsonify({"error": "A apărut o eroare la actualizarea utilizatorului."}), 400
+
     finally:
         cursor.close()
         db.close()
-    return jsonify({"message": "User updated"})
 
 @app.delete('/users/<int:id>')
 def delete_user(id):
