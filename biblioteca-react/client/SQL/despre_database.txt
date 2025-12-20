@@ -1,0 +1,21 @@
+# Instructiuni pentru importul bazei de date Biblioteca
+
+!Pentru biblioteca_user se poate folosi parola urmatoare: parola_lavinia7
+
+(La login in aplicatie se poate intra folosind username: laviniaperte@gmail.com si parola Athos21S*721) sau se poate face un nou profil cu sign up
+1. Fișierul SQL: 
+   - Numele fișierului: biblioteca.sql
+   - Conține toate tabelele și datele necesare: 
+     auth_users, books, librarians, loans, users
+
+2. Import în MySQL:
+   - Deschideti MySQL Workbench sau terminalul MySQL.
+   - Creeati baza de date (dacă nu există deja):
+       CREATE DATABASE IF NOT EXISTS biblioteca;
+   - Importă fișierul SQL:
+       mysql -u [username] -p biblioteca < biblioteca.sql
+     unde [username] este user-ul MySQL .
+
+3. Parole:
+   - Tabelele `auth_users` și `librarians` conțin parole criptate. 
+   - Nu sunt necesare parole suplimentare pentru import.

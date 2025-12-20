@@ -1,4 +1,5 @@
 # Proiect-UBD
+
 # 🧩 Cerințe pentru realizarea proiectului
 
 ## 📘 Descriere generală
@@ -21,41 +22,47 @@ Scopul proiectului este de a aplica cunoștințele teoretice în dezvoltarea une
 Proiectul are două componente obligatorii:
 
 ### (A) Aplicația funcțională
+
 Aplicația va fi complet funcțională și va respecta următoarele cerințe:
+
 - Va avea **o interfață grafică intuitivă** și ușor de utilizat;
 - Va fi implementată folosind tehnologiile și principiile predate la curs;
 - Va demonstra în mod clar **funcționalitatea cerută de tema aleasă**.
 
 ### (B) Lucrarea (referatul)
+
 Lucrarea care însoțește aplicația trebuie să conțină:
 
-1. **Analiza și specificarea cerințelor**  
-   - Descrierea scopului aplicației și a funcționalităților principale.  
+1. **Analiza și specificarea cerințelor**
+
+   - Descrierea scopului aplicației și a funcționalităților principale.
    - Modelarea datelor prin **diagrame Entitate–Relație (ERD)**.
 
-2. **Proiectarea și implementarea aplicației**  
-   - Arhitectura generală a sistemului.  
-   - Tehnologii și limbaje folosite.  
+2. **Proiectarea și implementarea aplicației**
+
+   - Arhitectura generală a sistemului.
+   - Tehnologii și limbaje folosite.
    - Capturi de ecran, exemple de interfață.
 
-3. **Prezentarea aplicației folosind diagrame**  
-   - Diagrame de flux, diagrame de clase, cazuri de utilizare etc.  
+3. **Prezentarea aplicației folosind diagrame**
+
+   - Diagrame de flux, diagrame de clase, cazuri de utilizare etc.
    - Explicarea logicii de funcționare.
 
-4. **Descrierea și interpretarea rezultatelor obținute**  
-   - Exemple de scenarii de utilizare.  
+4. **Descrierea și interpretarea rezultatelor obținute**
+   - Exemple de scenarii de utilizare.
    - Observații și concluzii privind funcționarea aplicației.
 
 ---
 
 ## 📊 Punctarea proiectului (maxim 10 puncte)
 
-| Criteriu | Punctaj maxim | Descriere |
-|-----------|----------------|------------|
-| 🧩 **Proiectarea bazei de date** | **2p** | Modelarea corectă a bazei de date, definirea entităților și relațiilor conform cerințelor aplicației. |
-| 📘 **Documentația teoretică** | **3p** | Prezentarea tehnologiilor utilizate, rolul acestora în implementare, motivarea alegerilor făcute, descrierea funcționalităților aplicației și modul de implementare. |
-| 💻 **Prezentarea aplicației** | **3p** | Demonstrarea funcționalităților în cadrul susținerii publice; se vor prezenta rapoarte, teste efectuate și grafice relevante. |
-| 🗣️ **Modul de prezentare și răspunsurile la întrebări** | **2p** | Claritatea prezentării, capacitatea de a explica deciziile tehnice și de a răspunde corect la întrebările adresate. |
+| Criteriu                                                | Punctaj maxim | Descriere                                                                                                                                                            |
+| ------------------------------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🧩 **Proiectarea bazei de date**                        | **2p**        | Modelarea corectă a bazei de date, definirea entităților și relațiilor conform cerințelor aplicației.                                                                |
+| 📘 **Documentația teoretică**                           | **3p**        | Prezentarea tehnologiilor utilizate, rolul acestora în implementare, motivarea alegerilor făcute, descrierea funcționalităților aplicației și modul de implementare. |
+| 💻 **Prezentarea aplicației**                           | **3p**        | Demonstrarea funcționalităților în cadrul susținerii publice; se vor prezenta rapoarte, teste efectuate și grafice relevante.                                        |
+| 🗣️ **Modul de prezentare și răspunsurile la întrebări** | **2p**        | Claritatea prezentării, capacitatea de a explica deciziile tehnice și de a răspunde corect la întrebările adresate.                                                  |
 
 > 🔹 **Total: 10 puncte**
 
@@ -221,6 +228,7 @@ Temele acoperă domenii diverse: baze de date, aplicații web, management de res
 ## ✅ Ce se predă la final
 
 La finalul semestrului, studentul va preda:
+
 1. 🔹 Codul sursă complet al aplicației (în repository-ul GitHub);
 2. 🔹 Documentația (referatul);
 3. 🔹 O prezentare scurtă a proiectului.
@@ -230,6 +238,7 @@ La finalul semestrului, studentul va preda:
 ## 📬 Contact și consultații
 
 Pentru întrebări, clarificări sau consultări legate de proiect:
+
 - Discuțiile au loc în cadrul **orelor de proiect** conform orarului.
 - Este încurajată comunicarea prin **issues** sau **pull requests** în repository-ul proiectului (pentru feedback tehnic).
 
